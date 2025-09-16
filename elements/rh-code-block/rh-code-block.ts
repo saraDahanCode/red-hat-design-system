@@ -336,22 +336,21 @@ export class RhCodeBlock extends LitElement {
    */
   async #computeLineNumbers() {
     if (!this.#isIntersecting) {
-      return; 
+      return;
     }
-    
+
     await this.updateComplete;
     const codes =
         this.#prismOutput ? [this.shadowRoot?.getElementById('prism-output')].filter(x => !!x)
       : this.#getSlottedCodeElements();
-      
-      if (this.lineNumbers === 'hidden') {
-  
-        this.#lineHeights = codes.flatMap(element =>
-          element.textContent?.split(/\n(?!$)/g).map(() => '1px') ?? []
-        );
-        this.requestUpdate();
-        return; 
-      }
+
+    if (this.lineNumbers === 'hidden') {
+      this.#lineHeights = codes.flatMap(element =>
+        element.textContent?.split(/\n(?!$)/g).map(() => '1px') ?? []
+      );
+      this.requestUpdate();
+      return;
+    }
 
     const infos: CodeLineHeightsInfo[] = codes.map(element => {
       const codeElement = this.#prismOutput ? element.querySelector('code') : element;
